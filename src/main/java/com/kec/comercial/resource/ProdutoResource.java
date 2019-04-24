@@ -1,12 +1,12 @@
 package com.kec.comercial.resource;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kec.comercial.event.RecursoCriadoEvent;
 import com.kec.comercial.model.Produto;
 import com.kec.comercial.repository.ProdutoRepository;
+import com.kec.comercial.repository.filter.ProdutoFilter;
 import com.kec.comercial.service.ProdutoService;
 
 @CrossOrigin
@@ -42,8 +43,8 @@ public class ProdutoResource {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PRODUTO') and #oauth2.hasScope('read')")
-	public List<Produto> listar() {
-		return produtos.findAll();
+	public Page<Produto> listar(ProdutoFilter produtoFilter, Pageable pageable) {
+		return produtos.filtrar(produtoFilter,pageable);
 	}
 	
 	@PostMapping

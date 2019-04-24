@@ -11,5 +11,6 @@ public abstract class Cliente_ {
 
 	public static volatile SingularAttribute<Cliente, Long> id;
 	public static volatile SingularAttribute<Cliente, String> nome;
+	public static volatile SingularAttribute<Cliente, TipoCliente> tipo;
 
 }

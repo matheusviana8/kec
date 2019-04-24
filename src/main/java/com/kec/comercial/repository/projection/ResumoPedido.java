@@ -11,14 +11,12 @@ public class ResumoPedido{
 	private LocalDate dataCriacao;
 	private BigDecimal valorTotal;
 	private StatusPedido status;
-	private String cliente;
 	
-	public ResumoPedido(Long id,  LocalDate dataCriacao, BigDecimal valorTotal, StatusPedido status, String cliente) {
+	public ResumoPedido(Long id,  LocalDate dataCriacao, BigDecimal valorTotal, StatusPedido status) {
 		this.id = id;
 		this.dataCriacao = dataCriacao;
 		this.valorTotal = valorTotal;
 		this.status = status;
-		this.cliente = cliente;
 	}
 
 	public Long getId() {
@@ -53,13 +51,6 @@ public class ResumoPedido{
 		this.status = status;
 	}
 
-	public String getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(String cliente) {
-		this.cliente = cliente;
-	}
 	
 
 	

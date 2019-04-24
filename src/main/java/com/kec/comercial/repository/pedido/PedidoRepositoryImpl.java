@@ -51,8 +51,7 @@ public class PedidoRepositoryImpl implements PedidoRepositoryQuery{
 				, root.get(Pedido_.id), root.get(Pedido_.id)
 				, root.get(Pedido_.dataCriacao), root.get(Pedido_.dataCriacao)
 				, root.get(Pedido_.valorTotal), root.get(Pedido_.valorTotal)
-				, root.get(Pedido_.status), root.get(Pedido_.status)
-				, root.get(Pedido_.cliente).get(Cliente_.nome)));
+				, root.get(Pedido_.status), root.get(Pedido_.status)));
 		
 		Predicate[] predicates = criarRestricoes(pedidoFilter, builder, root);
 		criteria.where(predicates);

@@ -13,8 +13,6 @@ public abstract class Pedido_ {
 
 	public static volatile SingularAttribute<Pedido, Long> id;
 	public static volatile SingularAttribute<Pedido, LocalDate> dataCriacao;
-	public static volatile SingularAttribute<Pedido, Cliente> cliente;
-	public static volatile SingularAttribute<Pedido, StatusPedido> status;
 	public static volatile SingularAttribute<Pedido, BigDecimal> valorTotal;
-
+	public static volatile SingularAttribute<Pedido, StatusPedido> status;
 }

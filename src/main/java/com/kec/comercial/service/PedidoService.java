@@ -26,11 +26,15 @@ public class PedidoService {
 			throw new ClienteInexistenteOuInativaException();
 		}
 		
+		pedido.getItensPedido().forEach(i -> i.setPedido(pedido));
+		//getContatos().forEach(c -> c.setPessoa(pessoa));
+		
 		return pedidoRepository.save(pedido);
 	}
 	
 	public Pedido atualizar(Long id, Pedido pedido) {
 		Pedido pedidoSalvo = buscarPedido(id);
+		pedido.getItensPedido().forEach(i -> i.setPedido(pedido));
 		
 		BeanUtils.copyProperties(pedido, pedidoSalvo, "id");
 		

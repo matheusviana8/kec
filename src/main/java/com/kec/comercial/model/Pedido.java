@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,6 +18,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "pedido")
@@ -147,7 +151,9 @@ public class Pedido implements Serializable {
 		this.cliente = cliente;
 	}
 
-	@OneToMany(mappedBy = "pedido")
+	@JsonIgnoreProperties("pedido")
+	@Valid
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	public List<ItemPedido> getItensPedido() {
 		return itensPedido;
 	}
