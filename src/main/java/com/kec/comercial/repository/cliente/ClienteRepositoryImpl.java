@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import com.kec.comercial.model.Cliente;
 import com.kec.comercial.model.Cliente_;
+import com.kec.comercial.model.TipoCliente;
 import com.kec.comercial.repository.filter.ClienteFilter;
 
 public class ClienteRepositoryImpl implements ClienteRepositoryQuery{
@@ -52,10 +53,17 @@ public class ClienteRepositoryImpl implements ClienteRepositoryQuery{
 			predicates.add(builder.like(
 					builder.lower(root.get(Cliente_.nome)), "%" + clienteFilter.getNome().toLowerCase() + "%"));
 		}
+		
 		if (!StringUtils.isEmpty(clienteFilter.getTipo())) {
-			System.out.println(clienteFilter.getTipo());
-			predicates.add(builder.equal(
-					root.get(Cliente_.tipo), clienteFilter.getTipo()));
+			if (clienteFilter.getTipo().getDescricao() == "FORNECEDOR") {
+				predicates.add(builder.equal(
+						root.get(Cliente_.tipo), clienteFilter.getTipo()));
+	
+			}else {
+				predicates.add(builder.notEqual(
+						root.get(Cliente_.tipo), TipoCliente.FORNECEDOR));
+
+			} 
 		}
 		
 		return predicates.toArray(new Predicate[predicates.size()]);

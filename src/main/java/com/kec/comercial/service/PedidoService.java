@@ -21,10 +21,12 @@ public class PedidoService {
 	private PedidoRepository pedidoRepository;
 
 	public Pedido salvar(Pedido pedido) {
+		/*
 		Cliente cliente = clienteRepository.findOne(pedido.getCliente().getId());
 		if (cliente == null || cliente.isInativo()) {
 			throw new ClienteInexistenteOuInativaException();
-		}
+		}*/
+		//TODO: RETIRAR COMENTARIO
 		
 		pedido.getItensPedido().forEach(i -> i.setPedido(pedido));
 		//getContatos().forEach(c -> c.setPessoa(pessoa));

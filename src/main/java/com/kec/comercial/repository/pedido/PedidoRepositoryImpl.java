@@ -14,6 +14,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.StringUtils;
 
 import com.kec.comercial.model.Cliente_;
 import com.kec.comercial.model.Pedido;
@@ -48,10 +49,11 @@ public class PedidoRepositoryImpl implements PedidoRepositoryQuery{
 		Root<Pedido> root = criteria.from(Pedido.class);
 		
 		criteria.select(builder.construct(ResumoPedido.class
-				, root.get(Pedido_.id), root.get(Pedido_.id)
-				, root.get(Pedido_.dataCriacao), root.get(Pedido_.dataCriacao)
-				, root.get(Pedido_.valorTotal), root.get(Pedido_.valorTotal)
-				, root.get(Pedido_.status), root.get(Pedido_.status)));
+				, root.get(Pedido_.id)
+				, root.get(Pedido_.cliente).get(Cliente_.nome)
+				, root.get(Pedido_.dataCriacao)
+				, root.get(Pedido_.valorTotal)
+				, root.get(Pedido_.status)));
 		
 		Predicate[] predicates = criarRestricoes(pedidoFilter, builder, root);
 		criteria.where(predicates);
@@ -66,6 +68,15 @@ public class PedidoRepositoryImpl implements PedidoRepositoryQuery{
 			Root<Pedido> root) {
 		List<Predicate> predicates = new ArrayList<>();
 			
+		if (!StringUtils.isEmpty(pedidoFilter.getId())) {
+			predicates.add(builder.equal(root.get(Pedido_.id), pedidoFilter.getId()));
+		}
+		
+		if (!StringUtils.isEmpty(pedidoFilter.getCliente())) {
+			predicates.add(builder.like(
+					builder.lower(root.get(Pedido_.cliente).get(Cliente_.nome)), "%" + pedidoFilter.getCliente().toLowerCase() + "%"));
+		}
+		
 		if (pedidoFilter.getDataCriacaoDe() != null) {
 			predicates.add(
 					builder.greaterThanOrEqualTo(root.get(Pedido_.dataCriacao), pedidoFilter.getDataCriacaoDe()));

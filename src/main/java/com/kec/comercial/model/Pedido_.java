@@ -15,4 +15,13 @@ public abstract class Pedido_ {
 	public static volatile SingularAttribute<Pedido, LocalDate> dataCriacao;
 	public static volatile SingularAttribute<Pedido, BigDecimal> valorTotal;
 	public static volatile SingularAttribute<Pedido, StatusPedido> status;
+	
+	public static volatile SingularAttribute<Pedido, BigDecimal> valorFrete;
+	public static volatile SingularAttribute<Pedido, String> vendedor;
+	public static volatile SingularAttribute<Pedido, BigDecimal> valorDesconto;
+	public static volatile SingularAttribute<Pedido, String> formaPagamento;
+	public static volatile SingularAttribute<Pedido, String> observacao;
+	public static volatile SingularAttribute<Pedido, Cliente> cliente;
+
 }
+	

@@ -1,6 +1,8 @@
 package com.kec.comercial.resource;
 
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -75,8 +77,9 @@ public class PedidoResource {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PEDIDO') and #oauth2.hasScope('write')")
-	public ResponseEntity<Pedido> adicionar(@Valid @RequestBody Pedido Pedido, HttpServletResponse response) {
-		Pedido pedidoSalvo = pedidoService.salvar(Pedido);
+	public ResponseEntity<Pedido> adicionar(@Valid @RequestBody Pedido pedido, HttpServletResponse response) {
+		pedido.setDataCriacao(LocalDate.now());
+		Pedido pedidoSalvo = pedidoService.salvar(pedido);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, pedidoSalvo.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(pedidoSalvo);
 		

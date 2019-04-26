@@ -30,6 +30,8 @@ public class Pedido implements Serializable {
 
 	private Long id;
 	private LocalDate dataCriacao;
+	private String tipo;
+	private String natureza;
 	private String observacao;
 	private LocalDate dataEntrega;
 	private BigDecimal valorFrete = BigDecimal.ZERO;
@@ -54,6 +56,23 @@ public class Pedido implements Serializable {
 	@Column(name = "data_criacao")
 	public LocalDate getDataCriacao() {
 		return dataCriacao;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	
+
+	public String getNatureza() {
+		return natureza;
+	}
+
+	public void setNatureza(String natureza) {
+		this.natureza = natureza;
 	}
 
 	public void setDataCriacao(LocalDate dataCriacao) {
