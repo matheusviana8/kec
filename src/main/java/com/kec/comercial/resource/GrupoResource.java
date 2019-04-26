@@ -48,7 +48,7 @@ public class GrupoResource {
 	}
 	
 	@PostMapping
-	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_GRUPO') and #oauth2.hasScope('write')")
+	//@PreAuthorize("hasAuthority('ROLE_CADASTRAR_GRUPO') and #oauth2.hasScope('write')")
 	public ResponseEntity<Grupo> criar(@Valid @RequestBody Grupo grupo, HttpServletResponse response) {
 		Grupo grupoSalvo = grupos.save(grupo);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, grupoSalvo.getId()));
