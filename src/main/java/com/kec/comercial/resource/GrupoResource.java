@@ -42,13 +42,13 @@ public class GrupoResource {
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
-	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_GRUPO') and #oauth2.hasScope('read')")
+	//@PreAuthorize("hasAuthority('ROLE_PESQUISAR_GRUPO') and #oauth2.hasScope('read')")
 	public Page<Grupo> pesquisar(GrupoFilter grupoFilter, Pageable pageable) {
 		return grupos.filtrar(grupoFilter,pageable);
 	}
 	
 	@PostMapping
-	//@PreAuthorize("hasAuthority('ROLE_CADASTRAR_GRUPO') and #oauth2.hasScope('write')")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_GRUPO') and #oauth2.hasScope('write')")
 	public ResponseEntity<Grupo> criar(@Valid @RequestBody Grupo grupo, HttpServletResponse response) {
 		Grupo grupoSalvo = grupos.save(grupo);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, grupoSalvo.getId()));
