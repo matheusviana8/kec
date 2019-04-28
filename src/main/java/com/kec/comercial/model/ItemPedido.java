@@ -22,6 +22,7 @@ public class ItemPedido implements Serializable {
 	private Long id;
 	private Integer quantidade = 1;
 	private BigDecimal valorUnitario = BigDecimal.ZERO;
+	private BigDecimal valorTotal = BigDecimal.ZERO;
 	private Produto produto;
 	private Pedido pedido;
 
@@ -33,6 +34,15 @@ public class ItemPedido implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public void setValorTotal(BigDecimal valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+
+	@Column(name = "valor_total", nullable = false, precision = 10, scale = 2)
+	public BigDecimal getValorTotal() {
+		return valorTotal;
 	}
 
 	@Column(nullable = false, length = 3)
@@ -96,11 +106,6 @@ public class ItemPedido implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Transient
-	public BigDecimal getValorTotal() {
-		return this.getValorUnitario().multiply(new BigDecimal(this.getQuantidade()));
 	}
 	
 	@Transient
