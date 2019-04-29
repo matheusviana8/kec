@@ -49,7 +49,7 @@ public class ProdutoResource {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CATEGORIA') and #oauth2.hasScope('write')")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PRODUTO') and #oauth2.hasScope('write')")
 	public ResponseEntity<Produto> criar(@Valid @RequestBody Produto produto, HttpServletResponse response) {
 		Produto produtoSalvo = produtos.save(produto);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, produtoSalvo.getId()));

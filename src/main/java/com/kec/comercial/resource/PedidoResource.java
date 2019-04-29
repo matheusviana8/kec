@@ -1,8 +1,8 @@
 package com.kec.comercial.resource;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,11 +31,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kec.comercial.event.RecursoCriadoEvent;
 import com.kec.comercial.exceptionhandler.KecExceptionHandler.Erro;
+import com.kec.comercial.model.ItemPedido;
 import com.kec.comercial.model.Pedido;
 import com.kec.comercial.repository.PedidoRepository;
 import com.kec.comercial.repository.filter.PedidoFilter;
 import com.kec.comercial.repository.projection.ResumoPedido;
 import com.kec.comercial.service.PedidoService;
+import com.kec.comercial.service.ProdutoService;
 import com.kec.comercial.service.exception.ClienteInexistenteOuInativaException;
 
 @CrossOrigin
@@ -45,6 +47,9 @@ public class PedidoResource {
 	
 	@Autowired
 	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private ProdutoService produtoService;
 	
 	@Autowired
 	private PedidoService pedidoService;
@@ -79,11 +84,27 @@ public class PedidoResource {
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PEDIDO') and #oauth2.hasScope('write')")
 	public ResponseEntity<Pedido> adicionar(@Valid @RequestBody Pedido pedido, HttpServletResponse response) {
 		pedido.setDataCriacao(LocalDate.now());
+		
+		BigDecimal soma = BigDecimal.ZERO;
+		/*for(int i = 0;i<pedido.getItensPedido().size();i++) {
+			
+		}*/
+		produtoService.atualizarSaldo(pedido.getItensPedido());
+		
+		
+		for (ItemPedido item : pedido.getItensPedido()) {
+			soma = soma.add(item.getValorTotal());
+		}
+		pedido.setValorTotal(soma);
+		//atualizar saldos de produto
+		
 		Pedido pedidoSalvo = pedidoService.salvar(pedido);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, pedidoSalvo.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(pedidoSalvo);
 		
 	}
+	
+
 	
 	@PutMapping("{id}")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PEDIDO') and #oauth2.hasScope('write')")

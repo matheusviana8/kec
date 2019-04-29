@@ -1,10 +1,13 @@
 package com.kec.comercial.service;
 
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.kec.comercial.model.ItemPedido;
 import com.kec.comercial.model.Produto;
 import com.kec.comercial.repository.ProdutoRepository;
 
@@ -35,6 +38,17 @@ public class ProdutoService {
 			throw new EmptyResultDataAccessException(1);
 		}
 		return produtoSalvo;
+	}
+	
+	public boolean atualizarSaldo(List<ItemPedido> itensPedido) {
+		Produto produto;
+		for (ItemPedido item : itensPedido) {
+			produto = item.getProduto();
+			produto.setSaldo(produto.getSaldo()-item.getQuantidade());
+			produtos.save(produto);
+		}
+		
+		return false;
 	}
 
 }
