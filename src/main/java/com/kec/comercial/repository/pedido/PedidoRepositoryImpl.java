@@ -1,5 +1,6 @@
 package com.kec.comercial.repository.pedido;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
+import com.kec.comercial.dto.PedidoEstatisticaDia;
 import com.kec.comercial.model.Cliente_;
 import com.kec.comercial.model.Pedido;
 import com.kec.comercial.model.Pedido_;
@@ -26,6 +28,36 @@ public class PedidoRepositoryImpl implements PedidoRepositoryQuery{
 
 	@PersistenceContext
 	private EntityManager manager;
+	
+	@Override
+	public List<PedidoEstatisticaDia> porDia(LocalDate mesReferencia) {
+		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+		
+		CriteriaQuery<PedidoEstatisticaDia> criteriaQuery = criteriaBuilder.
+				createQuery(PedidoEstatisticaDia.class);
+		
+		Root<Pedido> root = criteriaQuery.from(Pedido.class);
+		
+		criteriaQuery.select(criteriaBuilder.construct(PedidoEstatisticaDia.class, 
+				root.get(Pedido_.dataCriacao),
+				criteriaBuilder.sum(root.get(Pedido_.valorTotal))));
+		
+		LocalDate primeiroDia = mesReferencia.withDayOfMonth(1);
+		LocalDate ultimoDia = mesReferencia.withDayOfMonth(mesReferencia.lengthOfMonth());
+		
+		criteriaQuery.where(
+				criteriaBuilder.greaterThanOrEqualTo(root.get(Pedido_.dataCriacao), 
+						primeiroDia),
+				criteriaBuilder.lessThanOrEqualTo(root.get(Pedido_.dataCriacao), 
+						ultimoDia));
+		
+		criteriaQuery.groupBy(root.get(Pedido_.dataCriacao));
+		
+		TypedQuery<PedidoEstatisticaDia> typedQuery = manager
+				.createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+	}
 	
 	@Override
 	public Page<Pedido> filtrar(PedidoFilter pedidoFilter, Pageable pageable) {

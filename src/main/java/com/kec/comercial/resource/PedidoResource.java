@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kec.comercial.dto.PedidoEstatisticaDia;
 import com.kec.comercial.event.RecursoCriadoEvent;
 import com.kec.comercial.exceptionhandler.KecExceptionHandler.Erro;
 import com.kec.comercial.model.ItemPedido;
@@ -59,6 +60,12 @@ public class PedidoResource {
 	
 	@Autowired
 	private MessageSource messageSource;
+	
+	@GetMapping("/estatisticas/por-dia")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PEDIDO') and #oauth2.hasScope('read')")
+	public List<PedidoEstatisticaDia> porDia() {
+		return this.pedidoRepository.porDia(LocalDate.now());
+	}
 
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PEDIDO') and #oauth2.hasScope('read')")
