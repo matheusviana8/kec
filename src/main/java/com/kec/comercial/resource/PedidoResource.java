@@ -14,7 +14,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -60,6 +62,17 @@ public class PedidoResource {
 	
 	@Autowired
 	private MessageSource messageSource;
+	
+	@GetMapping("/imprimir/{id}")
+	public ResponseEntity<byte[]> imprimirPedido(@PathVariable long id) throws Exception {
+		Pedido pedido = pedidoRepository.findOne(id);
+		System.out.println(pedido.getCliente());
+		byte[] relatorio = pedidoService.imprimirPedido(pedido);
+		
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE)
+				.body(relatorio);
+	}
 	
 	@GetMapping("/estatisticas/por-dia")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PEDIDO') and #oauth2.hasScope('read')")

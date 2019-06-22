@@ -1,15 +1,26 @@
 package com.kec.comercial.service;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.kec.comercial.model.Cliente;
 import com.kec.comercial.model.Pedido;
 import com.kec.comercial.repository.ClienteRepository;
 import com.kec.comercial.repository.PedidoRepository;
-import com.kec.comercial.service.exception.ClienteInexistenteOuInativaException;
+
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
 public class PedidoService {
@@ -50,6 +61,21 @@ public class PedidoService {
 			throw new EmptyResultDataAccessException(1);
 		}
 		return pedidoSalvo;
+	}
+	
+	public byte[] imprimirPedido(Pedido pedido) throws Exception {
+		List<Pedido> dados = new ArrayList<Pedido>();
+		dados.add(pedido);
+		Map<String, Object> parametros = new HashMap<>();
+		parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
+		
+		InputStream inputStream = this.getClass().getResourceAsStream(
+				"/relatorios/pedido.jasper");
+		
+		JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream, parametros,
+				new JRBeanCollectionDataSource(dados));
+		
+		return JasperExportManager.exportReportToPdf(jasperPrint);
 	}
 
 }
