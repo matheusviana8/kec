@@ -13,8 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "item_pedido")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ItemPedido implements Serializable {
 
 	private static final long serialVersionUID = 1L;

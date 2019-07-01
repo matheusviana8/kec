@@ -14,6 +14,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.kec.comercial.model.Pedido;
+import com.kec.comercial.model.StatusPedido;
 import com.kec.comercial.repository.ClienteRepository;
 import com.kec.comercial.repository.PedidoRepository;
 
@@ -25,11 +26,10 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 @Service
 public class PedidoService {
 	
-	@Autowired
-	private ClienteRepository clienteRepository;
-	
 	@Autowired 
 	private PedidoRepository pedidoRepository;
+	@Autowired
+	private ProdutoService produtoService;
 
 	public Pedido salvar(Pedido pedido) {
 		/*
@@ -38,8 +38,13 @@ public class PedidoService {
 			throw new ClienteInexistenteOuInativaException();
 		}*/
 		//TODO: RETIRAR COMENTARIO
-		
+		//setando pedido nos itens pedidos
 		pedido.getItensPedido().forEach(i -> i.setPedido(pedido));
+		
+		if (pedido.getStatus() == StatusPedido.EMITIDO) {
+			produtoService.atualizarSaldo(pedido.getItensPedido());
+		}
+		
 		//getContatos().forEach(c -> c.setPessoa(pessoa));
 		
 		return pedidoRepository.save(pedido);
@@ -47,10 +52,17 @@ public class PedidoService {
 	
 	public Pedido atualizar(Long id, Pedido pedido) {
 		Pedido pedidoSalvo = buscarPedido(id);
+		
+		//setando pedido nos itens pedidos/seriais
 		pedido.getItensPedido().forEach(i -> i.setPedido(pedido));
+		pedido.getItensSerial().forEach(i -> i.setPedido(pedido));
+		
+		if (pedido.getStatus() == StatusPedido.EMITIDO && pedidoSalvo.getStatus() != StatusPedido.EMITIDO) {
+			produtoService.atualizarSaldo(pedido.getItensPedido());
+		}
 		
 		BeanUtils.copyProperties(pedido, pedidoSalvo, "id");
-		
+		//aqui fica a regra de atualização do pedido
 		return pedidoRepository.save(pedidoSalvo);
 	}
 	

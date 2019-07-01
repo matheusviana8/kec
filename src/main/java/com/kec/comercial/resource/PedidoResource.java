@@ -109,7 +109,7 @@ public class PedidoResource {
 		/*for(int i = 0;i<pedido.getItensPedido().size();i++) {
 			
 		}*/
-		produtoService.atualizarSaldo(pedido.getItensPedido());
+		//produtoService.atualizarSaldo(pedido.getItensPedido());
 		
 		
 		for (ItemPedido item : pedido.getItensPedido()) {

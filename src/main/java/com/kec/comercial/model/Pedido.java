@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,6 +43,7 @@ public class Pedido implements Serializable {
 	private Vendedor vendedor;
 	private Cliente cliente;
 	private List<ItemPedido> itensPedido = new ArrayList<ItemPedido>();
+	private List<Serial> itensSerial = new ArrayList<Serial>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -181,6 +183,17 @@ public class Pedido implements Serializable {
 		this.itensPedido = itensPedido;
 	}
 	
+	@JsonIgnoreProperties("pedido")
+	@Valid
+	@OneToMany(mappedBy = "pedido",cascade = CascadeType.ALL)
+	public List<Serial> getItensSerial() {
+		return itensSerial;
+	}
+
+	public void setItensSerial(List<Serial> itensSerial) {
+		this.itensSerial = itensSerial;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
