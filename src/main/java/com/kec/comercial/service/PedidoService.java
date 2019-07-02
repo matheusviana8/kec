@@ -54,14 +54,17 @@ public class PedidoService {
 		Pedido pedidoSalvo = buscarPedido(id);
 		
 		//setando pedido nos itens pedidos/seriais
-		pedido.getItensPedido().forEach(i -> i.setPedido(pedido));
+		pedidoSalvo.getItensPedido().clear();
+		pedidoSalvo.getItensPedido().addAll(pedido.getItensPedido());
+		pedidoSalvo.getItensPedido().forEach(i -> i.setPedido(pedidoSalvo));
+		
 		pedido.getItensSerial().forEach(i -> i.setPedido(pedido));
 		
 		if (pedido.getStatus() == StatusPedido.EMITIDO && pedidoSalvo.getStatus() != StatusPedido.EMITIDO) {
 			produtoService.atualizarSaldo(pedido.getItensPedido());
 		}
 		
-		BeanUtils.copyProperties(pedido, pedidoSalvo, "id");
+		BeanUtils.copyProperties(pedido, pedidoSalvo, "id","itensPedido");
 		//aqui fica a regra de atualização do pedido
 		return pedidoRepository.save(pedidoSalvo);
 	}
