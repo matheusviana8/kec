@@ -174,7 +174,7 @@ public class Pedido implements Serializable {
 
 	@JsonIgnoreProperties("pedido")
 	@Valid
-	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
 	public List<ItemPedido> getItensPedido() {
 		return itensPedido;
 	}
@@ -185,7 +185,7 @@ public class Pedido implements Serializable {
 	
 	@JsonIgnoreProperties("pedido")
 	@Valid
-	@OneToMany(mappedBy = "pedido",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pedido",cascade = CascadeType.ALL, orphanRemoval = true)
 	public List<Serial> getItensSerial() {
 		return itensSerial;
 	}

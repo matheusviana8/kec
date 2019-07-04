@@ -41,10 +41,6 @@ public class PedidoService {
 		//setando pedido nos itens pedidos
 		pedido.getItensPedido().forEach(i -> i.setPedido(pedido));
 		
-		if (pedido.getStatus() == StatusPedido.EMITIDO) {
-			produtoService.atualizarSaldo(pedido.getItensPedido());
-		}
-		
 		//getContatos().forEach(c -> c.setPessoa(pessoa));
 		
 		return pedidoRepository.save(pedido);
@@ -58,13 +54,16 @@ public class PedidoService {
 		pedidoSalvo.getItensPedido().addAll(pedido.getItensPedido());
 		pedidoSalvo.getItensPedido().forEach(i -> i.setPedido(pedidoSalvo));
 		
-		pedido.getItensSerial().forEach(i -> i.setPedido(pedido));
+		pedidoSalvo.getItensSerial().clear();
+		pedidoSalvo.getItensSerial().addAll(pedido.getItensSerial());
+		pedidoSalvo.getItensSerial().forEach(i -> i.setPedido(pedidoSalvo));
 		
+		//ATUALIZAR SALDO DOS PRODUTOS SOMENTE QUANDO O PEDIDO FOR EMITIDO
 		if (pedido.getStatus() == StatusPedido.EMITIDO && pedidoSalvo.getStatus() != StatusPedido.EMITIDO) {
-			produtoService.atualizarSaldo(pedido.getItensPedido());
+			produtoService.atualizarSaldo(pedido.getItensPedido(),pedido.getTipo());
 		}
 		
-		BeanUtils.copyProperties(pedido, pedidoSalvo, "id","itensPedido");
+		BeanUtils.copyProperties(pedido, pedidoSalvo, "id","itensPedido","itensSerial");
 		//aqui fica a regra de atualização do pedido
 		return pedidoRepository.save(pedidoSalvo);
 	}

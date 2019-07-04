@@ -36,6 +36,7 @@ import com.kec.comercial.event.RecursoCriadoEvent;
 import com.kec.comercial.exceptionhandler.KecExceptionHandler.Erro;
 import com.kec.comercial.model.ItemPedido;
 import com.kec.comercial.model.Pedido;
+import com.kec.comercial.model.StatusPedido;
 import com.kec.comercial.repository.PedidoRepository;
 import com.kec.comercial.repository.filter.PedidoFilter;
 import com.kec.comercial.repository.projection.ResumoPedido;
@@ -119,6 +120,11 @@ public class PedidoResource {
 		//atualizar saldos de produto
 		
 		Pedido pedidoSalvo = pedidoService.salvar(pedido);
+		
+		if (pedido.getStatus() == StatusPedido.EMITIDO) {
+			produtoService.atualizarSaldo(pedido.getItensPedido(),pedido.getTipo());
+		}
+		
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, pedidoSalvo.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(pedidoSalvo);
 		
@@ -137,7 +143,18 @@ public class PedidoResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_PEDIDO') and #oauth2.hasScope('write')")
 	public void remover(@PathVariable Long id) {
-		pedidoRepository.delete(id);		
+		Pedido pedido = pedidoRepository.findOne(id);
+		String tipo = "";
+		
+		if (pedido.getTipo().equals("E")) {
+			tipo = "S";
+		}else {
+			tipo = "E";
+		}
+		
+		pedidoRepository.delete(id);
+		produtoService.atualizarSaldo(pedido.getItensPedido(),tipo);
+				
 	}
 	
 	

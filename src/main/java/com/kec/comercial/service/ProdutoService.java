@@ -40,15 +40,22 @@ public class ProdutoService {
 		return produtoSalvo;
 	}
 	
-	public boolean atualizarSaldo(List<ItemPedido> itensPedido) {
+	public boolean atualizarSaldo(List<ItemPedido> itensPedido,String tipo) {
 		Produto produto;
 		for (ItemPedido item : itensPedido) {
 			produto = item.getProduto();
-			produto.setSaldo(produto.getSaldo()-item.getQuantidade());
+			if(tipo.equals("S")) {
+				System.out.println("- "+tipo);
+				produto.setSaldo(produto.getSaldo()-item.getQuantidade());
+			}else {
+				System.out.println("+ "+tipo);
+				produto.setSaldo(produto.getSaldo()+item.getQuantidade());
+			}
 			produtos.save(produto);
 		}
 		
 		return false;
 	}
+	
 
 }
