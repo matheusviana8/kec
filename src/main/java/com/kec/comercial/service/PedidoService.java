@@ -78,8 +78,8 @@ public class PedidoService {
 	}
 	
 	public byte[] imprimirPedido(Pedido pedido) throws Exception {
-		List<Pedido> dados = new ArrayList<Pedido>();
-		dados.add(pedido);
+		//List<Pedido> dados = new ArrayList<Pedido>();
+		//dados.add(pedido);
 		Map<String, Object> parametros = new HashMap<>();
 		parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
 		
@@ -87,7 +87,7 @@ public class PedidoService {
 				"/relatorios/pedido.jasper");
 		
 		JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream, parametros,
-				new JRBeanCollectionDataSource(dados));
+				new JRBeanCollectionDataSource(pedido.getItensPedido()));
 		
 		return JasperExportManager.exportReportToPdf(jasperPrint);
 	}
