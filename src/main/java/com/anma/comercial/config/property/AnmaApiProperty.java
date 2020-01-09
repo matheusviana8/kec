@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("anma")
 public class AnmaApiProperty {
 	
-	private String originPermitida = "http://anma.herokuapp.com";
+	private String originPermitida = "https://anma.herokuapp.com";
 	
 	private final Seguranca seguranca = new Seguranca();
 	
