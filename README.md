@@ -16,6 +16,9 @@ Funcionalidades do sistema:
 Front-end: Angular 7 + Primeng
 Back-end: API Rest Java - Spring Framework + Hibernate + MySql + JasperReports
 Hospedagem feita no Heroku: https://anma.herokuapp.com/
-
-
 Front-end = https://github.com/matheusviana8/anma-ui
+
+
+Autor: Matheus Viana de Lima
+Email: matheus.viana28l@gmail.com
+Whats: (85) 9 9916.5941
