@@ -19,6 +19,7 @@ public abstract class Lancamento_ {
 	public static volatile SingularAttribute<Lancamento, Categoria> categoria;
 	public static volatile SingularAttribute<Lancamento, BigDecimal> valor;
 	public static volatile SingularAttribute<Lancamento, String> descricao;
+	
 
 }
 

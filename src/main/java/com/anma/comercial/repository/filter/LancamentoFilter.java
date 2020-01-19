@@ -4,9 +4,13 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.anma.comercial.model.TipoLancamento;
+
 public class LancamentoFilter {
 
 	private String descricao;
+	
+	private TipoLancamento tipo;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dataVencimentoDe;
@@ -17,6 +21,16 @@ public class LancamentoFilter {
 	public String getDescricao() {
 		return descricao;
 	}
+
+	public TipoLancamento getTipo() {
+		return tipo;
+	}
+
+
+	public void setTipo(TipoLancamento tipo) {
+		this.tipo = tipo;
+	}
+
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
