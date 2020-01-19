@@ -12,5 +12,6 @@ import com.anma.comercial.repository.lancamento.LancamentoRepositoryQuery;
 public interface LancamentoRepository extends JpaRepository<Lancamento, Long>, LancamentoRepositoryQuery {
 	
 	List<Lancamento> findByDataVencimentoLessThanEqualAndDataPagamentoIsNull(LocalDate data);
+	
 
 }
