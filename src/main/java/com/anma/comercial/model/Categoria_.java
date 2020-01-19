@@ -10,6 +10,7 @@ public abstract class Categoria_ {
 
 	public static volatile SingularAttribute<Categoria, Long> id;
 	public static volatile SingularAttribute<Categoria, String> nome;
+	public static volatile SingularAttribute<Categoria, TipoLancamento> tipo;
 
 }
 

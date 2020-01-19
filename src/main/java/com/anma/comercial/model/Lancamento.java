@@ -58,6 +58,8 @@ public class Lancamento {
 	@JoinColumn(name = "id_cliente")
 	private Cliente cliente; 
 	
+	private Boolean pago;
+	
 	private String anexo;
 	
 	@Transient
@@ -78,6 +80,14 @@ public class Lancamento {
 
 	public String getDescricao() {
 		return descricao;
+	}
+
+	public Boolean getPago() {
+		return pago;
+	}
+
+	public void setPago(Boolean pago) {
+		this.pago = pago;
 	}
 
 	public void setDescricao(String descricao) {

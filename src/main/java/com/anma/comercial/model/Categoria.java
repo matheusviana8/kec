@@ -1,6 +1,8 @@
 package com.anma.comercial.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +21,11 @@ public class Categoria {
 	@NotNull
 	@Size(min = 3, max = 20)
 	private String nome;
-
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private TipoLancamento tipo;
+	
 	public Long getId() {
 		return id;
 	}
@@ -34,6 +40,14 @@ public class Categoria {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public TipoLancamento getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoLancamento tipo) {
+		this.tipo = tipo;
 	}
 
 	@Override

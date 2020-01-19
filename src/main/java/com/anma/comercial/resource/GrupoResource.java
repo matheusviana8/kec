@@ -42,7 +42,7 @@ public class GrupoResource {
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
-	//@PreAuthorize("hasAuthority('ROLE_PESQUISAR_GRUPO') and #oauth2.hasScope('read')")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_GRUPO') and #oauth2.hasScope('read')")
 	public Page<Grupo> pesquisar(GrupoFilter grupoFilter, Pageable pageable) {
 		return grupos.filtrar(grupoFilter,pageable);
 	}
