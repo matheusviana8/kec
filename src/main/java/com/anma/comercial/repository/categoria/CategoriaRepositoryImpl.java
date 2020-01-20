@@ -47,9 +47,9 @@ public class CategoriaRepositoryImpl implements CategoriaRepositoryQuery{
 			predicates.add(builder.equal(root.get(Categoria_.id), categoriaFilter.getId()));
 		}
 		
-		if (!StringUtils.isEmpty(categoriaFilter.getDescricao())) {
+		if (!StringUtils.isEmpty(categoriaFilter.getNome())) {
 			predicates.add(builder.like(
-					builder.lower(root.get(Categoria_.nome)), "%" + categoriaFilter.getDescricao().toLowerCase() + "%"));
+					builder.lower(root.get(Categoria_.nome)), "%" + categoriaFilter.getNome().toLowerCase() + "%"));
 		}
 		if (!StringUtils.isEmpty(categoriaFilter.getTipo())) {
 			predicates.add(builder.equal(root.get(Categoria_.tipo), categoriaFilter.getTipo()));
