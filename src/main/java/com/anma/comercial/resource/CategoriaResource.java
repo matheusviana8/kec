@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.anma.comercial.event.RecursoCriadoEvent;
 import com.anma.comercial.model.Categoria;
-import com.anma.comercial.model.Grupo;
 import com.anma.comercial.repository.CategoriaRepository;
 import com.anma.comercial.repository.filter.CategoriaFilter;
 import com.anma.comercial.service.CategoriaService;
