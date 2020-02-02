@@ -16,6 +16,7 @@ import com.anma.comercial.repository.projection.ResumoLancamento;
 
 public interface LancamentoRepositoryQuery {
 	
+	public List<Lancamento> porData(LancamentoFilter lancamentoFilter);
 	public List<LancamentoEstatisticaCliente> porCliente(LocalDate inicio, LocalDate fim);
 	public List<LancamentoEstatisticaCategoria> porCategoria(LocalDate mesReferencia);
 	public List<LancamentoEstatisticaDia> porDia(LocalDate mesReferencia);
