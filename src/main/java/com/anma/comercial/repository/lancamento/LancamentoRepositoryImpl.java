@@ -35,6 +35,24 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 	private EntityManager manager;
 	
 	@Override
+	public List<Lancamento> porData(LancamentoFilter lancamentoFilter) {
+		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();		
+		CriteriaQuery<Lancamento> criteriaQuery = criteriaBuilder.createQuery(Lancamento.class);		
+		Root<Lancamento> root = criteriaQuery.from(Lancamento.class);
+		
+		criteriaQuery.select(root);
+		
+		Predicate[] predicates = criarRestricoes(lancamentoFilter, criteriaBuilder, root);
+		criteriaQuery.where(predicates);
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get(Lancamento_.dataVencimento)));
+
+		TypedQuery<Lancamento> typedQuery = manager
+				.createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+	}
+	
+	@Override
 	public List<LancamentoEstatisticaCliente> porCliente(LocalDate inicio, LocalDate fim) {
 		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		
