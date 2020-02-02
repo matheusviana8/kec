@@ -50,6 +50,16 @@ public class LancamentoResource {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 	
+	@GetMapping("/relatorios/por-data")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+	public ResponseEntity<byte[]> relatorioPorData(LancamentoFilter lancamentoFilter) throws Exception {
+		byte[] relatorio = lancamentoService.relatorioPorData(lancamentoFilter);
+		
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE)
+				.body(relatorio);
+	}
+	
 	@GetMapping("/relatorios/por-cliente")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public ResponseEntity<byte[]> relatorioPorPessoa(
