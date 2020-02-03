@@ -176,6 +176,8 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		
 		Predicate[] predicates = criarRestricoes(lancamentoFilter, builder, root);
 		criteria.where(predicates);
+		criteria.orderBy(builder.desc(root.get(Lancamento_.dataVencimento)));
+
 		
 		TypedQuery<ResumoLancamento> query = manager.createQuery(criteria);
 		adicionarRestricoesDePaginacao(query, pageable);
